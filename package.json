@@ -5,7 +5,12 @@
   "description": "Memory Piece - jogo da memória temático",
   "scripts": {
     "build": "node build.mjs",
-    "dev": "npm run build && npx wrangler pages dev dist",
-    "preview": "npx wrangler pages dev dist"
+    "dev": "node server.js",
+    "preview": "npx wrangler pages dev dist",
+    "dev:pages": "npm run build && npx wrangler pages dev dist",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "sql.js": "^1.13.0"
   }
 }
