@@ -11,6 +11,50 @@
   const soundButton = $('#sound-toggle');
   const helpDialog = $('#help-dialog');
   const winDialog = $('#win-dialog');
+  const accountDialog = $('#account-dialog');
+  let currentUser = null;
+  const difficultyNames = { easy:'East Blue', normal:'Grand Line', hard:'Novo Mundo' };
+
+  async function api(path, options = {}) {
+    const response = await fetch('/api' + path, { credentials:'same-origin', headers:{ 'Content-Type':'application/json', ...(options.headers || {}) }, ...options });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) throw new Error(data.error || 'Não foi possível concluir a operação.');
+    return data;
+  }
+  function renderAccount() {
+    const button = $('#account-button');
+    button.textContent = currentUser ? currentUser.username : 'Entrar';
+    button.title = currentUser ? 'Conta de ' + currentUser.username : 'Entrar ou criar conta';
+    $('#auth-view').hidden = Boolean(currentUser);
+    $('#account-view').hidden = !currentUser;
+    if (currentUser) { $('#account-username').textContent = currentUser.username; $('#account-email').textContent = currentUser.email; renderAccountRecords(); }
+  }
+  async function renderAccountRecords() {
+    const target = $('#account-records');
+    if (!currentUser) return;
+    target.textContent = 'Carregando recordes...';
+    try {
+      const { records } = await api('/records'); target.replaceChildren();
+      ['easy','normal','hard'].forEach(level => {
+        const record = records.find(item => item.difficulty === level);
+        const row = document.createElement('div'); row.className = 'account-record';
+        const name = document.createElement('span'); name.textContent = difficultyNames[level];
+        const score = document.createElement('strong'); score.textContent = record ? formatTime(record.seconds) + ' · ' + record.moves + ' tentativas' : 'Ainda sem recorde';
+        row.append(name, score); target.appendChild(row);
+      });
+    } catch (error) { target.textContent = error.message; }
+  }
+  async function checkSession() {
+    try { const data = await api('/me'); currentUser = data.user; } catch (_) { currentUser = null; }
+    renderAccount(); updateBest();
+  }
+  function setAuthMode(register) {
+    $('#login-form').hidden = register; $('#register-form').hidden = !register;
+    $('#auth-title').textContent = register ? 'Junte-se à tripulação' : 'Entre para sua tripulação';
+    $('#auth-description').textContent = register ? 'Crie sua conta e guarde seus recordes.' : 'Entre para acessar seus recordes salvos.';
+    $('#auth-switch').textContent = register ? 'Já tem conta? Entrar' : 'Não tem conta? Criar uma';
+    $('#login-error').textContent = ''; $('#register-error').textContent = '';
+  }
 
   const seaLife = ['luffy','zoro','nami','usopp','sanji','chopper','robin','franky','brook','jinbe'];
   const pairCounts = { easy: 6, normal: 8, hard: 10 };
@@ -110,27 +154,21 @@
     timerId = null;
   }
 
-  function getBest() {
+  async function updateBest() {
+    const label = $('#best-score');
+    if (!currentUser) { label.textContent = 'Entre para salvar seus recordes'; return; }
     try {
-      const value = localStorage.getItem('memory-piece-best-' + difficulty.value);
-      return value ? JSON.parse(value) : null;
-    } catch (_) { return null; }
+      const { records } = await api('/records');
+      const best = records.find(item => item.difficulty === difficulty.value);
+      label.textContent = best ? 'Seu recorde: ' + formatTime(best.seconds) + ' · ' + best.moves + ' tentativas' : 'Seu recorde: —';
+    } catch (_) { label.textContent = 'Recorde indisponível'; }
   }
-
-  function updateBest() {
-    const best = getBest();
-    $('#best-score').textContent = best
-      ? 'Recorde: ' + formatTime(best.seconds) + ' · ' + best.moves + ' tentativas'
-      : 'Seu recorde: —';
-  }
-
-  function saveBest() {
-    const previous = getBest();
-    if (!previous || seconds < previous.seconds || (seconds === previous.seconds && moves < previous.moves)) {
-      try { localStorage.setItem('memory-piece-best-' + difficulty.value, JSON.stringify({ seconds, moves })); } catch (_) {}
-      return true;
-    }
-    return false;
+  async function saveBest() {
+    if (!currentUser) return false;
+    try {
+      const result = await api('/records', { method:'POST', body:JSON.stringify({ difficulty:difficulty.value, seconds:Math.max(1,seconds), moves:Math.max(1,moves) }) });
+      return result.isRecord;
+    } catch (error) { hintEl.textContent = 'Não foi possível salvar o recorde: ' + error.message; return false; }
   }
 
   function updateStats() {
@@ -213,18 +251,18 @@
     }
   }
 
-  function finishGame() {
+  async function finishGame() {
     stopTimer();
-    const isRecord = saveBest();
+    const isRecord = await saveBest();
     $('#final-time').textContent = formatTime(seconds);
     $('#final-moves').textContent = moves;
-    hintEl.textContent = 'Você encontrou todos os pares. Parabéns!';
+    hintEl.textContent = currentUser ? 'Você encontrou todos os pares. Parabéns!' : 'Entre ou crie uma conta para salvar seu recorde.';
     updateBest();
     winDialog.querySelector('.new-record')?.remove();
     if (isRecord) {
       const label = document.createElement('p');
       label.className = 'eyebrow new-record';
-      label.textContent = '✦ NOVO RECORDE!';
+      label.textContent = '✦ NOVO RECORDE SALVO NA SUA CONTA!';
       winDialog.querySelector('.win-stats').after(label);
     }
     window.setTimeout(() => {
@@ -233,6 +271,30 @@
       window.setTimeout(() => playTone(880, .2), 140);
     }, 450);
   }
+
+
+  $('#account-button').addEventListener('click', () => { renderAccount(); accountDialog.showModal(); });
+  $('#auth-switch').addEventListener('click', () => setAuthMode($('#login-form').hidden));
+  $('#login-form').addEventListener('submit', async event => {
+    event.preventDefault(); const error = $('#login-error'); error.textContent = '';
+    const button = event.currentTarget.querySelector('button[type="submit"]'); button.disabled = true;
+    try {
+      const data = await api('/login', { method:'POST', body:JSON.stringify({ email:$('#login-email').value, password:$('#login-password').value }) });
+      currentUser = data.user; event.currentTarget.reset(); renderAccount(); updateBest();
+    } catch (err) { error.textContent = err.message; } finally { button.disabled = false; }
+  });
+  $('#register-form').addEventListener('submit', async event => {
+    event.preventDefault(); const error = $('#register-error'); error.textContent = '';
+    const button = event.currentTarget.querySelector('button[type="submit"]'); button.disabled = true;
+    try {
+      const data = await api('/register', { method:'POST', body:JSON.stringify({ username:$('#register-username').value, email:$('#register-email').value, password:$('#register-password').value }) });
+      currentUser = data.user; event.currentTarget.reset(); renderAccount(); updateBest();
+    } catch (err) { error.textContent = err.message; } finally { button.disabled = false; }
+  });
+  $('#logout-button').addEventListener('click', async () => {
+    try { await api('/logout', { method:'POST', body:'{}' }); } catch (_) {}
+    currentUser = null; renderAccount(); updateBest(); accountDialog.close();
+  });
 
   $('#restart').addEventListener('click', newGame);
   difficulty.addEventListener('change', newGame);
@@ -255,4 +317,5 @@
   });
 
   newGame();
+  checkSession();
 })();
