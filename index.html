@@ -13,7 +13,57 @@
 </head>
 <body>
   <div class="ocean-glow glow-one"></div><div class="ocean-glow glow-two"></div><div class="sea-grain"></div>
-  <main class="app-shell">
+  <section class="auth-screen" id="auth-screen">
+    <div class="auth-background-mark">☠</div>
+    <header class="auth-topbar">
+      <a class="brand" href="#" aria-label="Memory Piece"><span class="brand-mark">☠</span><span>MEMORY <span class="brand-dot">PIECE</span></span></a>
+      <span class="auth-top-note">SUA AVENTURA COMEÇA AQUI</span>
+    </header>
+    <div class="auth-layout">
+      <section class="auth-story">
+        <div class="eyebrow"><span class="pulse-dot"></span> BEM-VINDO À GRAND LINE</div>
+        <h1>Todo grande pirata<br>tem uma <span>memória lendária.</span></h1>
+        <p>Reúna sua tripulação, desafie sua memória e conquiste seu lugar entre as lendas dos mares.</p>
+        <div class="auth-perks">
+          <div><span>✦</span><section><strong>Seus recordes</strong><small>Guarde seu progresso e supere suas marcas.</small></section></div>
+          <div><span>⚓</span><section><strong>Sua jornada</strong><small>A mesma conta em cada visita.</small></section></div>
+          <div><span>☠</span><section><strong>Três mares, três desafios</strong><small>Do East Blue ao Novo Mundo.</small></section></div>
+        </div>
+        <div class="wanted-stamp"><small>WANTED</small><strong>MEMORY<br>MASTER</strong><span>DEAD OR ALIVE</span></div>
+      </section>
+      <section class="auth-card" aria-label="Acesso ao jogo">
+        <div class="auth-card-heading">
+          <span class="auth-emblem">🏴‍☠️</span>
+          <div class="eyebrow">INSCREVA-SE NA TRIPULAÇÃO</div>
+          <h2 id="auth-title">Que bom ter você de volta.</h2>
+          <p id="auth-description">Entre na sua conta para acessar seus recordes.</p>
+        </div>
+        <div class="auth-tabs" role="tablist" aria-label="Acesso à conta">
+          <button class="auth-tab active" id="login-tab" type="button" role="tab" aria-selected="true" aria-controls="login-form">Entrar</button>
+          <button class="auth-tab" id="register-tab" type="button" role="tab" aria-selected="false" aria-controls="register-form">Criar conta</button>
+        </div>
+        <form id="login-form" class="auth-form" role="tabpanel" aria-labelledby="login-tab">
+          <label for="login-email">E-mail</label><input id="login-email" type="email" autocomplete="email" required maxlength="160" placeholder="voce@email.com">
+          <label for="login-password">Senha</label><input id="login-password" type="password" autocomplete="current-password" required maxlength="128" placeholder="Sua senha">
+          <p class="auth-error" id="login-error" role="alert"></p>
+          <button class="primary-button" type="submit">Entrar na tripulação <span>↗</span></button>
+        </form>
+        <form id="register-form" class="auth-form" role="tabpanel" aria-labelledby="register-tab" hidden>
+          <label for="register-username">Nome de jogador</label><input id="register-username" type="text" autocomplete="username" minlength="3" maxlength="20" required placeholder="Seu nome na tripulação">
+          <label for="register-email">E-mail</label><input id="register-email" type="email" autocomplete="email" required maxlength="160" placeholder="voce@email.com">
+          <label for="register-password">Senha (mínimo 8 caracteres)</label><input id="register-password" type="password" autocomplete="new-password" minlength="8" maxlength="128" required placeholder="Crie uma senha">
+          <p class="auth-error" id="register-error" role="alert"></p>
+          <button class="primary-button" type="submit">Criar minha conta <span>↗</span></button>
+        </form>
+        <div class="auth-divider"><span>OU</span></div>
+        <button class="guest-button" id="guest-button" type="button">Continuar como visitante</button>
+        <p class="auth-footnote"><span>☠</span> Seus recordes só ficam vinculados à conta quando você entra.</p>
+      </section>
+    </div>
+    <footer class="auth-footer"><span>MEMORY PIECE</span><span>UMA AVENTURA • UM TESOURO • UMA TRIPULAÇÃO</span></footer>
+  </section>
+
+  <main class="app-shell" id="game-screen" hidden>
     <header class="topbar">
       <a class="brand" href="#" aria-label="Memory Piece início"><span class="brand-mark">☠</span><span>MEMORY <span class="brand-dot">PIECE</span></span></a>
       <div class="top-actions">
@@ -76,29 +126,7 @@
 
   <dialog id="account-dialog" class="modal account-modal">
     <button class="modal-close" data-close aria-label="Fechar">×</button>
-    <div id="auth-view">
-      <div class="modal-emoji">🏴‍☠️</div><h2 id="auth-title">Entre para sua tripulação</h2>
-      <p id="auth-description">Crie sua conta para guardar seus recordes neste dispositivo.</p>
-      <div class="auth-tabs" role="tablist" aria-label="Acesso à conta">
-        <button class="auth-tab active" id="login-tab" type="button" role="tab" aria-selected="true" aria-controls="login-form">Entrar</button>
-        <button class="auth-tab" id="register-tab" type="button" role="tab" aria-selected="false" aria-controls="register-form">Criar conta</button>
-      </div>
-      <form id="login-form" class="auth-form" role="tabpanel" aria-labelledby="login-tab">
-        <label for="login-email">E-mail</label><input id="login-email" type="email" autocomplete="email" required maxlength="160" placeholder="voce@email.com">
-        <label for="login-password">Senha</label><input id="login-password" type="password" autocomplete="current-password" required maxlength="128" placeholder="Sua senha">
-        <p class="auth-error" id="login-error" role="alert"></p>
-        <button class="primary-button" type="submit">Entrar</button>
-      </form>
-      <form id="register-form" class="auth-form" role="tabpanel" aria-labelledby="register-tab" hidden>
-        <label for="register-username">Nome de jogador</label><input id="register-username" type="text" autocomplete="username" minlength="3" maxlength="20" required placeholder="Seu nome na tripulação">
-        <label for="register-email">E-mail</label><input id="register-email" type="email" autocomplete="email" required maxlength="160" placeholder="voce@email.com">
-        <label for="register-password">Senha (mínimo 8 caracteres)</label><input id="register-password" type="password" autocomplete="new-password" minlength="8" maxlength="128" required placeholder="Crie uma senha">
-        <p class="auth-error" id="register-error" role="alert"></p>
-        <button class="primary-button" type="submit">Criar conta</button>
-      </form>
-      <p class="auth-footnote"><span>☠</span> Sua jornada fica salva na sua conta.</p>
-    </div>
-    <div id="account-view" hidden>
+    <div id="account-view">
       <div class="modal-emoji">☠️</div><h2 id="account-username">Sua tripulação</h2>
       <p id="account-email"></p><h3>Seus recordes</h3>
       <div id="account-records" class="account-records"></div>
