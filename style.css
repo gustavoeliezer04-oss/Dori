@@ -44,3 +44,67 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;background:rad
 .account-record{display:flex;justify-content:space-between;gap:10px;padding:10px 12px;border:1px solid #ffffff18;border-radius:7px;background:#10222e;font-size:12px}
 .account-record strong{font-variant-numeric:tabular-nums}
 @media(max-width:600px){.account-button{min-width:58px;padding:0 9px;font-size:11px}}
+
+
+/* --- Visual refresh: Grand Line / MathStorm-inspired interface --- */
+:root{--navy:#071827;--paper:#f7f1e4;--gold:#f2bd4b;--red:#c94d43;--muted:#9eabb0;--panel:#10283a;--panel-2:#0b2030}
+body{background:radial-gradient(ellipse at 50% -12%,#24546a 0,transparent 48%),radial-gradient(ellipse at 8% 75%,#12394a66,transparent 38%),linear-gradient(145deg,#071522 0%,#0b2030 52%,#081725 100%)}
+body:before{opacity:.6;background-image:linear-gradient(#ffffff08 1px,transparent 1px),linear-gradient(90deg,#ffffff08 1px,transparent 1px);background-size:44px 44px;mask-image:linear-gradient(to bottom,black,transparent 78%)}
+.app-shell{width:min(1020px,calc(100% - 40px))}
+.topbar{height:78px;border-bottom-color:#e8bd5b2b}
+.brand{font-size:25px;letter-spacing:3px}
+.brand-mark{box-shadow:0 0 0 4px #e9b94f12,0 5px 18px #0005}
+.top-actions{gap:10px}
+.icon-button{background:#ffffff0b;border-color:#ffffff26;backdrop-filter:blur(10px)}
+.account-button{min-width:86px;border-color:#e9b94f77;background:#e9b94f12;color:#f5d58e}
+.intro{padding:50px 0 32px}
+.intro .eyebrow{font-size:13px}
+.intro h1{font-size:clamp(46px,7vw,72px);letter-spacing:-.4px;text-shadow:0 8px 30px #0004}
+.intro h1 span{background:linear-gradient(110deg,#ffe09a,#e9b94f 65%,#d99a35);-webkit-background-clip:text;background-clip:text;color:transparent}
+.intro p{font-size:15px;color:#b7c8ce}
+.game-panel{padding:25px;background:linear-gradient(145deg,#153347f2,#0d2435f5);border:1px solid #d9b75b38;border-radius:18px;box-shadow:0 24px 70px #0006,inset 0 1px #ffffff12;backdrop-filter:blur(14px)}
+.game-panel:before{content:"";display:block;position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:linear-gradient(120deg,#ffffff08,transparent 30%,transparent 70%,#e9b94f08)}
+.game-toolbar{align-items:center}
+.difficulty-wrap select{min-width:205px;border-color:#6b8290;background:#091d2b;transition:border-color .2s,box-shadow .2s}
+.difficulty-wrap select:hover{border-color:#e9b94f99}
+.new-game-button{box-shadow:0 5px 15px #e9b94f22}
+.stats{gap:12px;margin:22px 0 16px}
+.stat{background:linear-gradient(145deg,#0b2030,#102a3b);border-color:#ffffff1c;padding:13px 15px;box-shadow:inset 0 1px #ffffff08}
+.stat-icon{background:#e9b94f17;color:#f2c66d}
+.stat strong{font-family:'Barlow Condensed',sans-serif;font-size:25px;letter-spacing:.4px}
+.progress-track{height:6px;background:#071725;border:1px solid #ffffff0b}
+.progress-fill{background:linear-gradient(90deg,#c98e32,#ffda7c);box-shadow:0 0 14px #e9b94f77}
+.board{gap:14px}
+.board.hard{gap:11px}
+.card{border-radius:13px}
+.card-back{background:linear-gradient(145deg,#f7f0df,#ded0b2);border:1px solid #fff4d6;box-shadow:inset 0 0 0 4px #fff8e9,0 7px 16px #0003;transition:filter .2s}
+.card-back:before{border-color:#bda77e}
+.card-back-mark{font-size:clamp(34px,4vw,48px);text-shadow:0 2px #fff7}
+.card:not(.flipped):not(.matched):hover .card-back{filter:brightness(1.07)}
+.card-front{background:linear-gradient(145deg,#fffaf0,#eee3cc);box-shadow:0 7px 18px #0003}
+.card.matched .card-front{box-shadow:0 0 0 2px #f2bd4b,0 0 24px #e9b94f35}
+.game-hint{font-size:13px;color:#c0cdd1;margin-top:20px}
+.footer{padding-top:20px;color:#9aabb3}
+.modal{width:min(460px,calc(100% - 28px));padding:32px;background:linear-gradient(150deg,#17384a,#0b2030);border:1px solid #e9b94f88;border-radius:17px;box-shadow:0 35px 100px #000b,inset 0 1px #ffffff14}
+.modal::backdrop{background:#020b12d9;backdrop-filter:blur(7px)}
+.modal h2{font-size:35px}
+.primary-button{padding:14px 18px;box-shadow:0 7px 18px #e9b94f20}
+.primary-button:focus-visible,.auth-tab:focus-visible{outline:2px solid #fff0bd;outline-offset:3px}
+.account-modal{text-align:left}
+.account-modal #auth-view>.modal-emoji,.account-modal #auth-view>h2,.account-modal #auth-view>#auth-description{text-align:center}
+.account-modal #auth-description{max-width:330px;margin:0 auto 20px}
+.auth-tabs{display:grid;grid-template-columns:1fr 1fr;gap:5px;padding:5px;margin:0 0 20px;background:#071a28;border:1px solid #ffffff18;border-radius:10px}
+.auth-tab{min-height:42px;border:0;border-radius:7px;background:transparent;color:#9fb2bb;font:900 13px 'Nunito Sans',sans-serif;cursor:pointer;transition:background .2s,color .2s,box-shadow .2s}
+.auth-tab:hover{color:#fff}
+.auth-tab.active{color:#1a2b35;background:linear-gradient(120deg,#f5cf79,#e9b94f);box-shadow:0 3px 12px #e9b94f25}
+.auth-form{gap:9px}
+.auth-form label{font-size:12px;color:#d0dce0}
+.auth-form input{min-height:46px;padding:12px 14px;background:#071b29;border-color:#526d7c;transition:border-color .2s,box-shadow .2s}
+.auth-form input::placeholder{color:#718691}
+.auth-form input:focus{border-color:#f2bd4b;box-shadow:0 0 0 3px #f2bd4b1c}
+.auth-form .primary-button{margin-top:8px}
+.auth-footnote{display:flex;align-items:center;justify-content:center;gap:8px;margin:17px 0 0!important;color:#8fa5af!important;font-size:11px!important;text-align:center!important}
+.auth-footnote span{color:var(--gold)}
+.account-record{background:#0a2030;border-color:#ffffff20;padding:12px 13px}
+@media(max-width:600px){.app-shell{width:calc(100% - 22px)}.topbar{height:68px}.intro{padding:38px 0 24px}.intro h1{font-size:clamp(42px,12vw,56px)}.game-panel{padding:14px;border-radius:15px}.stats{gap:7px}.stat{padding:10px 8px}.stat strong{font-size:21px}.board{gap:8px}.board.hard{gap:6px}.modal{padding:28px 22px}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
