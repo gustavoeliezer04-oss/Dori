@@ -25,7 +25,6 @@
     const button = $('#account-button');
     button.textContent = currentUser ? currentUser.username : 'Entrar';
     button.title = currentUser ? 'Conta de ' + currentUser.username : 'Entrar ou criar conta';
-    $('#auth-view').hidden = Boolean(currentUser);
     $('#account-view').hidden = !currentUser;
     if (currentUser) { $('#account-username').textContent = currentUser.username; $('#account-email').textContent = currentUser.email; renderAccountRecords(); }
   }
@@ -46,7 +45,20 @@
   }
   async function checkSession() {
     try { const data = await api('/me'); currentUser = data.user; } catch (_) { currentUser = null; }
-    renderAccount(); updateBest();
+    renderAccount();
+    if (currentUser) enterGame(); else showAuth('login');
+    updateBest();
+  }
+  function showAuth(mode = 'login') {
+    $('#auth-screen').hidden = false;
+    $('#game-screen').hidden = true;
+    setAuthMode(mode === 'register');
+  }
+  function enterGame() {
+    $('#auth-screen').hidden = true;
+    $('#game-screen').hidden = false;
+    renderAccount();
+    updateBest();
   }
   function setAuthMode(register) {
     $('#login-form').hidden = register; $('#register-form').hidden = !register;
@@ -57,7 +69,7 @@
     $('#login-tab').setAttribute('aria-selected', String(!register));
     $('#register-tab').setAttribute('aria-selected', String(register));
     $('#login-error').textContent = ''; $('#register-error').textContent = '';
-    $('#auth-description').textContent = register ? 'Crie seu acesso e mantenha seus recordes com sua tripulação.' : 'Acesse sua conta para continuar de onde parou.';
+    $('#auth-description').textContent = register ? 'Crie sua conta e comece a guardar seus recordes.' : 'Entre na sua conta para acessar seus recordes.';
   }
 
   const seaLife = ['luffy','zoro','nami','usopp','sanji','chopper','robin','franky','brook','jinbe'];
@@ -278,10 +290,11 @@
 
 
   $('#account-button').addEventListener('click', () => {
+    if (!currentUser) { showAuth('login'); return; }
     renderAccount();
-    if (!currentUser) setAuthMode(false);
     accountDialog.showModal();
   });
+  $('#guest-button').addEventListener('click', enterGame);
   $('#login-tab').addEventListener('click', () => setAuthMode(false));
   $('#register-tab').addEventListener('click', () => setAuthMode(true));
   $('#login-form').addEventListener('submit', async event => {
@@ -289,7 +302,7 @@
     const button = event.currentTarget.querySelector('button[type="submit"]'); button.disabled = true;
     try {
       const data = await api('/login', { method:'POST', body:JSON.stringify({ email:$('#login-email').value, password:$('#login-password').value }) });
-      currentUser = data.user; event.currentTarget.reset(); renderAccount(); updateBest();
+      currentUser = data.user; event.currentTarget.reset(); enterGame();
     } catch (err) { error.textContent = err.message; } finally { button.disabled = false; }
   });
   $('#register-form').addEventListener('submit', async event => {
@@ -297,12 +310,12 @@
     const button = event.currentTarget.querySelector('button[type="submit"]'); button.disabled = true;
     try {
       const data = await api('/register', { method:'POST', body:JSON.stringify({ username:$('#register-username').value, email:$('#register-email').value, password:$('#register-password').value }) });
-      currentUser = data.user; event.currentTarget.reset(); renderAccount(); updateBest();
+      currentUser = data.user; event.currentTarget.reset(); enterGame();
     } catch (err) { error.textContent = err.message; } finally { button.disabled = false; }
   });
   $('#logout-button').addEventListener('click', async () => {
     try { await api('/logout', { method:'POST', body:'{}' }); } catch (_) {}
-    currentUser = null; renderAccount(); updateBest(); accountDialog.close();
+    currentUser = null; renderAccount(); updateBest(); accountDialog.close(); showAuth('login');
   });
 
   $('#restart').addEventListener('click', newGame);
