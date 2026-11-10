@@ -111,7 +111,7 @@
 
   function getBest() {
     try {
-      const value = localStorage.getItem('dori-best-' + difficulty.value);
+      const value = localStorage.getItem('memory-piece-best-' + difficulty.value);
       return value ? JSON.parse(value) : null;
     } catch (_) { return null; }
   }
@@ -126,7 +126,7 @@
   function saveBest() {
     const previous = getBest();
     if (!previous || seconds < previous.seconds || (seconds === previous.seconds && moves < previous.moves)) {
-      try { localStorage.setItem('dori-best-' + difficulty.value, JSON.stringify({ seconds, moves })); } catch (_) {}
+      try { localStorage.setItem('memory-piece-best-' + difficulty.value, JSON.stringify({ seconds, moves })); } catch (_) {}
       return true;
     }
     return false;
