@@ -37,3 +37,9 @@ No painel da Cloudflare Pages, em **Settings → Builds & deployments → Build 
 - **Root directory:** `/` (raiz do repositório)
 
 Salve e execute **Retry deployment**. O script `build.mjs` copia o HTML, CSS, JavaScript e a pasta `assets` para `dist/`.
+
+## Desenvolvimento com Cloudflare
+
+- `npm run dev`: gera a pasta `dist/` e inicia a prévia local pelo Cloudflare Wrangler em `http://localhost:8788`.
+- `npm run build`: prepara os arquivos estáticos para publicação.
+- Na Cloudflare Pages, use **Build command** `npm run build` e **Build output directory** `dist`. Não use `npm run dev` como comando de deploy: ele inicia um servidor de desenvolvimento e não é o comando de compilação da publicação.
