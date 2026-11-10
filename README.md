@@ -1,45 +1,48 @@
 # Memory Piece — Jogo da Memória
 
-Jogo da memória com tema oceano, feito com HTML, CSS e JavaScript puro. Não precisa instalar dependências.
+Jogo da memória com HTML, CSS e JavaScript, com backend local em Node.js e banco SQLite para contas e recordes.
 
-## Como jogar localmente
+## Testar localmente (backend + SQLite)
 
-1. Baixe o repositório pelo botão **Code → Download ZIP** no GitHub e extraia o arquivo.
-2. Abra a pasta extraída.
-3. Dê dois cliques em `index.html` para abrir o jogo no navegador.
+**Requisito:** Node.js 18 ou superior.
 
-Também é possível abrir a pasta no VS Code e usar a extensão **Live Server**, clicando em **Go Live**.
+1. Instale o Node.js: https://nodejs.org/
+2. Baixe o repositório pelo botão Code → Download ZIP no GitHub e extraia.
+3. Abra a pasta do projeto no terminal (PowerShell, CMD ou terminal do VS Code).
+4. Execute:
 
-## Recursos
+~~~bash
+npm install
+npm run dev
+~~~
 
-- Três dificuldades: 6, 8 ou 12 pares.
-- Cronômetro, contador de tentativas e barra de progresso.
-- Recorde salvo no próprio navegador, separado por dificuldade.
-- Efeitos sonoros com controle de ligar/desligar.
-- Layout responsivo para computador e celular.
-- Não usa bibliotecas ou serviços externos para funcionar (a fonte personalizada pode usar internet).
+5. Abra http://localhost:3000 no navegador.
+
+O primeiro comando instala a dependência SQLite. O segundo inicia o site e a API local. O banco é criado automaticamente em data/memory-piece.sqlite.
+
+Para parar o servidor, volte ao terminal e pressione Ctrl + C.
+
+## Contas e recordes
+
+- Cadastro com nome de jogador, e-mail e senha.
+- Senhas protegidas com scrypt (não são armazenadas em texto puro).
+- Sessão de login em cookie HttpOnly.
+- Recordes pessoais por dificuldade (East Blue, Grand Line e Novo Mundo).
+- O recorde prioriza menor tempo; em empate, menor número de tentativas.
+- Os dados ficam no arquivo SQLite local e continuam salvos após fechar o servidor.
+
+**Importante:** esta primeira versão é para desenvolvimento local. O SQLite fica na sua máquina e não sincroniza com o site público da Cloudflare. Para publicar contas online depois, migraremos a API para Cloudflare Pages Functions/Workers e o banco para Cloudflare D1. Não coloque o arquivo data/memory-piece.sqlite no GitHub.
+
+## Outros comandos
+
+- npm run build: prepara os arquivos estáticos em dist/.
+- npm run dev:pages: abre a prévia estática com Wrangler (não inicia a API SQLite).
+- npm start: inicia o mesmo servidor local usado em npm run dev.
 
 ## Arquivos
 
-- `index.html`: estrutura do jogo.
-- `style.css`: visual, animações e adaptação para telas menores.
-- `script.js`: cartas, regras, cronômetro, sons e recordes.
-
-## Publicar na Cloudflare Pages
-
-Este projeto é um site estático (HTML, CSS e JavaScript), sem framework ou dependências externas de build. O repositório inclui um script que prepara os arquivos para publicação.
-
-No painel da Cloudflare Pages, em **Settings → Builds & deployments → Build configurations**, configure:
-
-- **Framework preset:** None
-- **Build command:** `npm run build`
-- **Build output directory:** `dist`
-- **Root directory:** `/` (raiz do repositório)
-
-Salve e execute **Retry deployment**. O script `build.mjs` copia o HTML, CSS, JavaScript e a pasta `assets` para `dist/`.
-
-## Desenvolvimento com Cloudflare
-
-- `npm run dev`: gera a pasta `dist/` e inicia a prévia local pelo Cloudflare Wrangler em `http://localhost:8788`.
-- `npm run build`: prepara os arquivos estáticos para publicação.
-- Na Cloudflare Pages, use **Build command** `npm run build` e **Build output directory** `dist`. Não use `npm run dev` como comando de deploy: ele inicia um servidor de desenvolvimento e não é o comando de compilação da publicação.
+- index.html: interface do jogo e telas de autenticação.
+- style.css: visual e responsividade.
+- script.js: jogo, chamadas da API e interface de conta.
+- server.js: backend local, autenticação, sessões e endpoints de recordes.
+- data/memory-piece.sqlite: banco criado automaticamente na primeira execução.
