@@ -26,3 +26,21 @@ body:before{content:"";position:fixed;inset:0;pointer-events:none;background:rad
 @keyframes match-pop{50%{transform:scale(1.035)}}
 @media(max-width:600px){.app-shell{width:min(100% - 22px,520px)}.topbar{height:65px}.intro{padding:32px 0 22px}.intro p{font-size:12px}.game-panel{padding:13px;border-radius:12px}.game-toolbar{align-items:center}.difficulty-wrap select{max-width:190px;font-size:11px;padding:9px 23px 9px 9px}.new-game-button{padding:9px 10px;font-size:11px;white-space:nowrap}.stats{gap:7px;margin:15px 0 12px}.stat{padding:9px 7px;gap:6px}.stat-icon{width:28px;height:28px;font-size:13px}.stat strong{font-size:16px}.stat small{font-size:9px;letter-spacing:.7px}.board{gap:8px}.board.hard{gap:6px}.card-face{border-radius:8px}.card-back:before{inset:5px}.card-back small{font-size:7px;letter-spacing:1px;bottom:7px}.card-front{padding:5px;gap:3px}.card-art{width:min(78%,76px);height:min(78%,76px)}.footer{font-size:10px}.intro h1{font-size:42px}}
 @media(max-width:370px){.board{gap:6px}.game-panel{padding:10px}.stats{gap:5px}.stat{padding:8px 5px}.stat-icon{display:none}.difficulty-wrap select{max-width:160px}.new-game-button{padding:8px}.card-caption{font-size:9px}}
+
+.account-button{width:auto;min-width:64px;padding:0 12px;border-radius:7px;font:800 12px 'Nunito Sans',sans-serif}
+.account-modal{text-align:left}
+.account-modal h2,.account-modal .modal-emoji,.account-modal>p{text-align:center}
+.account-modal>p{margin:0 0 18px}
+.auth-form{display:grid;gap:8px;text-align:left}
+.auth-form label{font:800 11px 'Barlow Condensed',sans-serif;letter-spacing:1.2px;text-transform:uppercase;color:#b8c7cb;margin-top:5px}
+.auth-form input{width:100%;border:1px solid #526673;border-radius:7px;padding:12px;background:#101f2b;color:var(--paper);font:600 14px 'Nunito Sans',sans-serif;outline:none}
+.auth-form input:focus{border-color:var(--gold)}
+.auth-form[hidden],#auth-view[hidden],#account-view[hidden]{display:none}
+.auth-form .primary-button{margin-top:8px}
+.auth-error{min-height:16px;margin:0!important;color:#ff9388!important;font-size:12px!important}
+.auth-switch{width:100%;margin-top:14px;border:0;background:transparent;color:var(--gold);font:800 13px 'Nunito Sans',sans-serif;cursor:pointer}
+.account-modal h3{font:800 15px 'Barlow Condensed',sans-serif;letter-spacing:1.3px;text-transform:uppercase;color:var(--gold);margin:22px 0 10px}
+.account-records{display:grid;gap:8px}
+.account-record{display:flex;justify-content:space-between;gap:10px;padding:10px 12px;border:1px solid #ffffff18;border-radius:7px;background:#10222e;font-size:12px}
+.account-record strong{font-variant-numeric:tabular-nums}
+@media(max-width:600px){.account-button{min-width:58px;padding:0 9px;font-size:11px}}
