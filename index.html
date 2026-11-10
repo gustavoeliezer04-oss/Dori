@@ -17,6 +17,7 @@
     <header class="topbar">
       <a class="brand" href="#" aria-label="Memory Piece início"><span class="brand-mark">☠</span><span>MEMORY <span class="brand-dot">PIECE</span></span></a>
       <div class="top-actions">
+        <button class="icon-button account-button" id="account-button" type="button">Entrar</button>
         <button class="icon-button" id="music-toggle" type="button" aria-label="Ligar ou desligar música" title="Música ligada">🎵</button><button class="icon-button" id="sound-toggle" type="button" aria-label="Ativar ou desativar efeitos sonoros" title="Efeitos sonoros">🔊</button>
         <button class="icon-button" id="help-button" type="button" aria-label="Como jogar" title="Como jogar">?</button>
       </div>
@@ -71,6 +72,34 @@
     <p>Todos os pares foram encontrados. Mandou bem demais!</p>
     <div class="win-stats"><div><small>TEMPO</small><strong id="final-time">00:00</strong></div><div><small>TENTATIVAS</small><strong id="final-moves">0</strong></div></div>
     <button class="primary-button" id="play-again" type="button">Jogar novamente ↗</button>
+  </dialog>
+
+  <dialog id="account-dialog" class="modal account-modal">
+    <button class="modal-close" data-close aria-label="Fechar">×</button>
+    <div id="auth-view">
+      <div class="modal-emoji">🏴‍☠️</div><h2 id="auth-title">Entre para sua tripulação</h2>
+      <p id="auth-description">Crie sua conta para guardar seus recordes neste dispositivo.</p>
+      <form id="login-form" class="auth-form">
+        <label for="login-email">E-mail</label><input id="login-email" type="email" autocomplete="email" required maxlength="160" placeholder="voce@email.com">
+        <label for="login-password">Senha</label><input id="login-password" type="password" autocomplete="current-password" required maxlength="128" placeholder="Sua senha">
+        <p class="auth-error" id="login-error" role="alert"></p>
+        <button class="primary-button" type="submit">Entrar</button>
+      </form>
+      <form id="register-form" class="auth-form" hidden>
+        <label for="register-username">Nome de jogador</label><input id="register-username" type="text" autocomplete="username" minlength="3" maxlength="20" required placeholder="Seu nome na tripulação">
+        <label for="register-email">E-mail</label><input id="register-email" type="email" autocomplete="email" required maxlength="160" placeholder="voce@email.com">
+        <label for="register-password">Senha (mínimo 8 caracteres)</label><input id="register-password" type="password" autocomplete="new-password" minlength="8" maxlength="128" required placeholder="Crie uma senha">
+        <p class="auth-error" id="register-error" role="alert"></p>
+        <button class="primary-button" type="submit">Criar conta</button>
+      </form>
+      <button class="auth-switch" id="auth-switch" type="button">Não tem conta? Criar uma</button>
+    </div>
+    <div id="account-view" hidden>
+      <div class="modal-emoji">☠️</div><h2 id="account-username">Sua tripulação</h2>
+      <p id="account-email"></p><h3>Seus recordes</h3>
+      <div id="account-records" class="account-records"></div>
+      <button class="primary-button" id="logout-button" type="button">Sair da conta</button>
+    </div>
   </dialog>
 
   <script src="script.js"></script>
