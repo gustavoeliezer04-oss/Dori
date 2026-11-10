@@ -1,4 +1,4 @@
-# Dori — Jogo da Memória
+# Memory Piece — Jogo da Memória
 
 Jogo da memória com tema oceano, feito com HTML, CSS e JavaScript puro. Não precisa instalar dependências.
 
