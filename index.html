@@ -79,20 +79,24 @@
     <div id="auth-view">
       <div class="modal-emoji">🏴‍☠️</div><h2 id="auth-title">Entre para sua tripulação</h2>
       <p id="auth-description">Crie sua conta para guardar seus recordes neste dispositivo.</p>
-      <form id="login-form" class="auth-form">
+      <div class="auth-tabs" role="tablist" aria-label="Acesso à conta">
+        <button class="auth-tab active" id="login-tab" type="button" role="tab" aria-selected="true" aria-controls="login-form">Entrar</button>
+        <button class="auth-tab" id="register-tab" type="button" role="tab" aria-selected="false" aria-controls="register-form">Criar conta</button>
+      </div>
+      <form id="login-form" class="auth-form" role="tabpanel" aria-labelledby="login-tab">
         <label for="login-email">E-mail</label><input id="login-email" type="email" autocomplete="email" required maxlength="160" placeholder="voce@email.com">
         <label for="login-password">Senha</label><input id="login-password" type="password" autocomplete="current-password" required maxlength="128" placeholder="Sua senha">
         <p class="auth-error" id="login-error" role="alert"></p>
         <button class="primary-button" type="submit">Entrar</button>
       </form>
-      <form id="register-form" class="auth-form" hidden>
+      <form id="register-form" class="auth-form" role="tabpanel" aria-labelledby="register-tab" hidden>
         <label for="register-username">Nome de jogador</label><input id="register-username" type="text" autocomplete="username" minlength="3" maxlength="20" required placeholder="Seu nome na tripulação">
         <label for="register-email">E-mail</label><input id="register-email" type="email" autocomplete="email" required maxlength="160" placeholder="voce@email.com">
         <label for="register-password">Senha (mínimo 8 caracteres)</label><input id="register-password" type="password" autocomplete="new-password" minlength="8" maxlength="128" required placeholder="Crie uma senha">
         <p class="auth-error" id="register-error" role="alert"></p>
         <button class="primary-button" type="submit">Criar conta</button>
       </form>
-      <button class="auth-switch" id="auth-switch" type="button">Não tem conta? Criar uma</button>
+      <p class="auth-footnote"><span>☠</span> Sua jornada fica salva na sua conta.</p>
     </div>
     <div id="account-view" hidden>
       <div class="modal-emoji">☠️</div><h2 id="account-username">Sua tripulação</h2>
