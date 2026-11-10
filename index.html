@@ -4,18 +4,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#071b2b">
-  <meta name="description" content="Dori — um jogo da memória divertido com tema oceano.">
-  <title>Dori — Jogo da Memória</title>
+  <meta name="description" content="Dori — memória pirata na Grand Line.">
+  <title>DORI — Grand Line Memory</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="ocean-glow glow-one"></div><div class="ocean-glow glow-two"></div>
+  <div class="ocean-glow glow-one"></div><div class="ocean-glow glow-two"></div><div class="sea-grain"></div>
   <main class="app-shell">
     <header class="topbar">
-      <a class="brand" href="#" aria-label="Dori início"><span class="brand-mark">🐠</span><span>DORI<span class="brand-dot">.</span></span></a>
+      <a class="brand" href="#" aria-label="Dori início"><span class="brand-mark">☠</span><span>DORI<span class="brand-dot">.</span></span></a>
       <div class="top-actions">
         <button class="icon-button" id="sound-toggle" type="button" aria-label="Ativar ou desativar sons" title="Som">🔊</button>
         <button class="icon-button" id="help-button" type="button" aria-label="Como jogar" title="Como jogar">?</button>
@@ -23,9 +23,9 @@
     </header>
 
     <section class="intro">
-      <div class="eyebrow"><span class="pulse-dot"></span> UM MERGULHO NA MEMÓRIA</div>
-      <h1>Encontre os <span>pares</span>.</h1>
-      <p>Vire as cartas, memorize os desenhos e combine todos os pares!</p>
+      <div class="eyebrow"><span class="pulse-dot"></span> <span class="pulse-dot"></span> PIRATAS DA GRAND LINE</div>
+      <h1>Encontre os <span>companheiros</span>.</h1>
+      <p>A tripulação se perdeu! Encontre os pares e reúna os Chapéus de Palha.</p>
     </section>
 
     <section class="game-panel" aria-label="Jogo da memória">
@@ -33,9 +33,9 @@
         <div class="difficulty-wrap">
           <label for="difficulty">Dificuldade</label>
           <select id="difficulty">
-            <option value="easy">Explorador · 6 pares</option>
-            <option value="normal" selected>Aventureiro · 8 pares</option>
-            <option value="hard">Lenda do mar · 12 pares</option>
+            <option value="easy">East Blue · 6 pares</option>
+            <option value="normal" selected>Grand Line · 8 pares</option>
+            <option value="hard">Novo Mundo · 10 pares</option>
           </select>
         </div>
         <button class="new-game-button" id="restart" type="button"><span>↻</span> Novo jogo</button>
@@ -49,10 +49,10 @@
 
       <div class="progress-track" aria-label="Progresso"><div class="progress-fill" id="progress"></div></div>
       <div class="board" id="board" aria-label="Cartas do jogo"></div>
-      <div class="game-hint" id="hint">Encontre dois desenhos iguais para formar um par.</div>
+      <div class="game-hint" id="hint">Encontre dois retratos iguais e reúna sua tripulação.</div>
     </section>
 
-    <footer class="footer"><span>🌊 Feito para quem gosta de desafios</span><span id="best-score">Seu recorde: —</span></footer>
+    <footer class="footer"><span>☠️ O tesouro espera por quem não desiste.</span><span id="best-score">Seu recorde: —</span></footer>
   </main>
 
   <dialog id="help-dialog" class="modal">
