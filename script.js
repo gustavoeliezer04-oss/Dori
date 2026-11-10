@@ -12,7 +12,7 @@
   const helpDialog = $('#help-dialog');
   const winDialog = $('#win-dialog');
 
-  const seaLife = ['🐙','🐬','🦀','🐢','🐠','🪼','🦈','🐳','🦑','🦭','🦐','🐡'];
+  const seaLife = ['luffy','zoro','nami','usopp','sanji','chopper','robin','franky','brook','jinbe'];
   const pairCounts = { easy: 6, normal: 8, hard: 12 };
   let deck = [], firstCard = null, secondCard = null, locked = false;
   let moves = 0, matched = 0, seconds = 0, timerId = null, started = false;
@@ -104,8 +104,11 @@
     card.className = 'card';
     card.dataset.animal = animal;
     card.dataset.index = index;
+    const portraitIndex = seaLife.indexOf(animal);
+    card.style.setProperty('--sprite-x', ((portraitIndex % 5) * 25) + '%');
+    card.style.setProperty('--sprite-y', (portraitIndex < 5 ? 0 : 100) + '%');
     card.setAttribute('aria-label', 'Carta virada para baixo');
-    card.innerHTML = '<span class="card-inner"><span class="card-face card-back" aria-hidden="true"></span><span class="card-face card-front" aria-hidden="true">' + animal + '</span></span>';
+    card.innerHTML = '<span class="card-inner"><span class="card-face card-back" aria-hidden="true"><span class="card-back-mark">☠</span><small>GRAND LINE</small></span><span class="card-face card-front" role="img" aria-label="Retrato de ' + animal + '"></span></span>';
     card.addEventListener('click', () => flipCard(card));
     return card;
   }
@@ -131,7 +134,7 @@
     if (locked || card.classList.contains('flipped') || card.classList.contains('matched')) return;
     startTimer();
     card.classList.add('flipped');
-    card.setAttribute('aria-label', 'Carta revelada: ' + card.dataset.animal);
+    card.setAttribute('aria-label', 'Retrato revelado: ' + card.dataset.animal);
     playTone(520, .07);
     if (!firstCard) {
       firstCard = card;
