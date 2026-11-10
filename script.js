@@ -13,7 +13,7 @@
   const winDialog = $('#win-dialog');
 
   const seaLife = ['luffy','zoro','nami','usopp','sanji','chopper','robin','franky','brook','jinbe'];
-  const pairCounts = { easy: 6, normal: 8, hard: 12 };
+  const pairCounts = { easy: 6, normal: 8, hard: 10 };
   let deck = [], firstCard = null, secondCard = null, locked = false;
   let moves = 0, matched = 0, seconds = 0, timerId = null, started = false;
   let soundOn = true, audioContext = null;
