@@ -16,7 +16,7 @@ npm install
 npm run dev
 ~~~
 
-5. Abra http://localhost:3000 no navegador.
+5. Abra http://127.0.0.1:3000 no navegador.
 
 O primeiro comando instala a dependência SQLite. O segundo inicia o site e a API local. O banco é criado automaticamente em data/memory-piece.sqlite.
 
