@@ -1,0 +1,9 @@
+{
+  "name": "memory-piece",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Memory Piece - jogo da memória temático",
+  "scripts": {
+    "build": "node build.mjs"
+  }
+}
