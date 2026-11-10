@@ -4,6 +4,8 @@
   "private": true,
   "description": "Memory Piece - jogo da memória temático",
   "scripts": {
-    "build": "node build.mjs"
+    "build": "node build.mjs",
+    "dev": "npm run build && npx wrangler pages dev dist",
+    "preview": "npx wrangler pages dev dist"
   }
 }
