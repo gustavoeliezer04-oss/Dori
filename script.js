@@ -16,7 +16,7 @@
   const pairCounts = { easy: 6, normal: 8, hard: 10 };
   let deck = [], firstCard = null, secondCard = null, locked = false;
   let moves = 0, matched = 0, seconds = 0, timerId = null, started = false;
-  let soundOn = true, audioContext = null;
+  let soundOn = true, musicOn = true, audioContext = null, musicTimer = null, musicStep = 0;
 
   function shuffle(items) {
     const result = [...items];
@@ -53,9 +53,51 @@
     } catch (_) { /* áudio é opcional */ }
   }
 
+
+  // Melodia original em clima de cantiga marítima; não reproduz a composição de Binks' Sake.
+  const shantyNotes = [440,523.25,587.33,659.25,587.33,523.25,392,440,349.23,392,440,523.25,493.88,440,392,349.23];
+  const shantyBass = [110,0,146.83,0,130.81,0,98,0];
+  function playMusicNote(frequency, duration = .3, volume = .018) {
+    if (!musicOn || !audioContext || !frequency) return;
+    const now = audioContext.currentTime;
+    const osc = audioContext.createOscillator();
+    const gain = audioContext.createGain();
+    const filter = audioContext.createBiquadFilter();
+    osc.type = 'triangle'; filter.type = 'lowpass'; filter.frequency.value = 1500;
+    osc.frequency.setValueAtTime(frequency, now);
+    gain.gain.setValueAtTime(.0001, now);
+    gain.gain.linearRampToValueAtTime(volume, now + .025);
+    gain.gain.exponentialRampToValueAtTime(.0001, now + duration);
+    osc.connect(filter); filter.connect(gain); gain.connect(audioContext.destination);
+    osc.start(now); osc.stop(now + duration + .02);
+  }
+  function musicLoop() {
+    if (!musicOn || !audioContext) return;
+    const note = shantyNotes[musicStep % shantyNotes.length];
+    playMusicNote(note, .27, .018);
+    if (musicStep % 2 === 0) playMusicNote(shantyBass[(musicStep / 2) % shantyBass.length], .42, .012);
+    musicStep++;
+    musicTimer = window.setTimeout(musicLoop, 330);
+  }
+  function startMusic() {
+    if (!musicOn || musicTimer !== null) return;
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      audioContext ||= new AudioCtx();
+      if (audioContext.state === 'suspended') audioContext.resume();
+      musicLoop();
+    } catch (_) { /* música opcional */ }
+  }
+  function stopMusic() {
+    if (musicTimer !== null) window.clearTimeout(musicTimer);
+    musicTimer = null;
+  }
+
   function startTimer() {
     if (started) return;
     started = true;
+    startMusic();
     timerId = window.setInterval(() => {
       seconds++;
       timerEl.textContent = formatTime(seconds);
@@ -115,6 +157,8 @@
 
   function newGame() {
     stopTimer();
+    stopMusic();
+    musicStep = 0;
     firstCard = secondCard = null;
     locked = false;
     moves = matched = seconds = 0;
@@ -196,6 +240,13 @@
   $('#play-again').addEventListener('click', newGame);
   $('#help-button').addEventListener('click', () => helpDialog.showModal());
   document.querySelectorAll('[data-close]').forEach(button => button.addEventListener('click', () => button.closest('dialog').close()));
+  $('#music-toggle').addEventListener('click', () => {
+    musicOn = !musicOn;
+    $('#music-toggle').textContent = musicOn ? '🎵' : '🎼';
+    $('#music-toggle').title = musicOn ? 'Música ligada' : 'Música desligada';
+    $('#music-toggle').setAttribute('aria-label', musicOn ? 'Desligar música' : 'Ligar música');
+    if (musicOn && started) startMusic(); else stopMusic();
+  });
   soundButton.addEventListener('click', () => {
     soundOn = !soundOn;
     soundButton.textContent = soundOn ? '🔊' : '🔇';
