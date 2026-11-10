@@ -15,31 +15,19 @@ const MIME = { ".html":"text/html; charset=utf-8", ".css":"text/css; charset=utf
 const SQL = await initSqlJs();
 let db = existsSync(DB_FILE) ? new SQL.Database(new Uint8Array(readFileSync(DB_FILE))) : new SQL.Database();
 
-db.run(`
-  PRAGMA foreign_keys = ON;
-  CREATE TABLE IF NOT EXISTS users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    username TEXT NOT NULL,
-    email TEXT NOT NULL UNIQUE,
-    password_hash TEXT NOT NULL,
-    password_salt TEXT NOT NULL,
-    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
-  );
-  CREATE TABLE IF NOT EXISTS sessions (
-    token_hash TEXT PRIMARY KEY,
-    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    expires_at INTEGER NOT NULL
-  );
-  CREATE TABLE IF NOT EXISTS records (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-    difficulty TEXT NOT NULL CHECK (difficulty IN ('easy','normal','hard')),
-    best_seconds INTEGER NOT NULL,
-    best_moves INTEGER NOT NULL,
-    completed_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    UNIQUE(user_id, difficulty)
-  );
-`);
+db.run("PRAGMA foreign_keys = ON");
+db.run(`CREATE TABLE IF NOT EXISTS users (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, username TEXT NOT NULL, email TEXT NOT NULL UNIQUE,
+  password_hash TEXT NOT NULL, password_salt TEXT NOT NULL, created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+)`);
+db.run(`CREATE TABLE IF NOT EXISTS sessions (
+  token_hash TEXT PRIMARY KEY, user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE, expires_at INTEGER NOT NULL
+)`);
+db.run(`CREATE TABLE IF NOT EXISTS records (
+  id INTEGER PRIMARY KEY AUTOINCREMENT, user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  difficulty TEXT NOT NULL CHECK (difficulty IN ('easy','normal','hard')), best_seconds INTEGER NOT NULL, best_moves INTEGER NOT NULL,
+  completed_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP, UNIQUE(user_id, difficulty)
+)`);
 await mkdir(DATA_DIR, { recursive: true });
 function persist() { writeFileSync(DB_FILE, Buffer.from(db.export())); }
 persist();
