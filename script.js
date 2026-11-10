@@ -52,8 +52,12 @@
     $('#login-form').hidden = register; $('#register-form').hidden = !register;
     $('#auth-title').textContent = register ? 'Junte-se à tripulação' : 'Entre para sua tripulação';
     $('#auth-description').textContent = register ? 'Crie sua conta e guarde seus recordes.' : 'Entre para acessar seus recordes salvos.';
-    $('#auth-switch').textContent = register ? 'Já tem conta? Entrar' : 'Não tem conta? Criar uma';
+    $('#login-tab').classList.toggle('active', !register);
+    $('#register-tab').classList.toggle('active', register);
+    $('#login-tab').setAttribute('aria-selected', String(!register));
+    $('#register-tab').setAttribute('aria-selected', String(register));
     $('#login-error').textContent = ''; $('#register-error').textContent = '';
+    $('#auth-description').textContent = register ? 'Crie seu acesso e mantenha seus recordes com sua tripulação.' : 'Acesse sua conta para continuar de onde parou.';
   }
 
   const seaLife = ['luffy','zoro','nami','usopp','sanji','chopper','robin','franky','brook','jinbe'];
@@ -273,8 +277,13 @@
   }
 
 
-  $('#account-button').addEventListener('click', () => { renderAccount(); accountDialog.showModal(); });
-  $('#auth-switch').addEventListener('click', () => setAuthMode($('#login-form').hidden));
+  $('#account-button').addEventListener('click', () => {
+    renderAccount();
+    if (!currentUser) setAuthMode(false);
+    accountDialog.showModal();
+  });
+  $('#login-tab').addEventListener('click', () => setAuthMode(false));
+  $('#register-tab').addEventListener('click', () => setAuthMode(true));
   $('#login-form').addEventListener('submit', async event => {
     event.preventDefault(); const error = $('#login-error'); error.textContent = '';
     const button = event.currentTarget.querySelector('button[type="submit"]'); button.disabled = true;
