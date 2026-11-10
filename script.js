@@ -174,9 +174,10 @@
     $('#final-moves').textContent = moves;
     hintEl.textContent = 'Você encontrou todos os pares. Parabéns!';
     updateBest();
+    winDialog.querySelector('.new-record')?.remove();
     if (isRecord) {
       const label = document.createElement('p');
-      label.className = 'eyebrow';
+      label.className = 'eyebrow new-record';
       label.textContent = '✦ NOVO RECORDE!';
       winDialog.querySelector('.win-stats').after(label);
     }
