@@ -8,7 +8,7 @@ import initSqlJs from "sql.js";
 
 const ROOT = path.dirname(fileURLToPath(import.meta.url));
 const PORT = Number(process.env.PORT || 3000);
-const DATA_DIR = path.join(ROOT, "data");
+const DATA_DIR = process.env.DATA_DIR || path.join(ROOT, "data");
 const DB_FILE = path.join(DATA_DIR, "memory-piece.sqlite");
 const SESSION_DAYS = 30;
 const MIME = { ".html":"text/html; charset=utf-8", ".css":"text/css; charset=utf-8", ".js":"text/javascript; charset=utf-8", ".svg":"image/svg+xml", ".png":"image/png", ".jpg":"image/jpeg", ".jpeg":"image/jpeg", ".webp":"image/webp", ".ico":"image/x-icon" };
@@ -71,12 +71,12 @@ function createSession(userId, res) {
   const token = randomBytes(32).toString("hex");
   const expires = Date.now() + SESSION_DAYS * 86400000;
   execute("INSERT INTO sessions(token_hash,user_id,expires_at) VALUES(?,?,?)", [hashToken(token), userId, expires]);
-  res.setHeader("Set-Cookie", `mp_session=${token}; HttpOnly; SameSite=Lax; Path=/; Max-Age=${SESSION_DAYS * 86400}`);
+  res.setHeader("Set-Cookie", `mp_session=${token}; HttpOnly; SameSite=Lax; Path=/; Max-Age=${SESSION_DAYS * 86400}${process.env.NODE_ENV === "production" ? "; Secure" : ""}`);
 }
 function publicUser(user) { return { id:user.id, username:user.username, email:user.email }; }
 
 async function api(req, res, url) {
-  if (req.method === "GET" && url.pathname === "/api/health") return send(res, 200, { ok:true, database:"SQLite local", environment:"development" });
+  if (req.method === "GET" && url.pathname === "/api/health") return send(res, 200, { ok:true, database:"SQLite", environment:process.env.NODE_ENV || "development" });
   if (req.method === "POST" && url.pathname === "/api/register") {
     const body = await readBody(req);
     const username = String(body.username || "").trim();
@@ -167,7 +167,7 @@ const server = http.createServer(async (req, res) => {
   }
 });
 
-server.listen(PORT, "127.0.0.1", () => {
+server.listen(PORT, "0.0.0.0", () => {
   console.log(`Memory Piece local: http://127.0.0.1:${PORT}`);
   console.log(`SQLite: ${DB_FILE}`);
 });
