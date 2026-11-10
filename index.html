@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#071b2b">
+  <meta name="description" content="Dori — um jogo da memória divertido com tema oceano.">
+  <title>Dori — Jogo da Memória</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="ocean-glow glow-one"></div><div class="ocean-glow glow-two"></div>
+  <main class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="#" aria-label="Dori início"><span class="brand-mark">🐠</span><span>DORI<span class="brand-dot">.</span></span></a>
+      <div class="top-actions">
+        <button class="icon-button" id="sound-toggle" type="button" aria-label="Ativar ou desativar sons" title="Som">🔊</button>
+        <button class="icon-button" id="help-button" type="button" aria-label="Como jogar" title="Como jogar">?</button>
+      </div>
+    </header>
+
+    <section class="intro">
+      <div class="eyebrow"><span class="pulse-dot"></span> UM MERGULHO NA MEMÓRIA</div>
+      <h1>Encontre os <span>pares</span>.</h1>
+      <p>Vire as cartas, memorize os desenhos e combine todos os pares!</p>
+    </section>
+
+    <section class="game-panel" aria-label="Jogo da memória">
+      <div class="game-toolbar">
+        <div class="difficulty-wrap">
+          <label for="difficulty">Dificuldade</label>
+          <select id="difficulty">
+            <option value="easy">Explorador · 6 pares</option>
+            <option value="normal" selected>Aventureiro · 8 pares</option>
+            <option value="hard">Lenda do mar · 12 pares</option>
+          </select>
+        </div>
+        <button class="new-game-button" id="restart" type="button"><span>↻</span> Novo jogo</button>
+      </div>
+
+      <div class="stats" aria-live="polite">
+        <div class="stat"><span class="stat-icon">⏱</span><div><small>TEMPO</small><strong id="timer">00:00</strong></div></div>
+        <div class="stat"><span class="stat-icon">🎯</span><div><small>TENTATIVAS</small><strong id="moves">0</strong></div></div>
+        <div class="stat"><span class="stat-icon">✨</span><div><small>PARES</small><strong id="pairs">0/8</strong></div></div>
+      </div>
+
+      <div class="progress-track" aria-label="Progresso"><div class="progress-fill" id="progress"></div></div>
+      <div class="board" id="board" aria-label="Cartas do jogo"></div>
+      <div class="game-hint" id="hint">Encontre dois desenhos iguais para formar um par.</div>
+    </section>
+
+    <footer class="footer"><span>🌊 Feito para quem gosta de desafios</span><span id="best-score">Seu recorde: —</span></footer>
+  </main>
+
+  <dialog id="help-dialog" class="modal">
+    <button class="modal-close" data-close aria-label="Fechar">×</button>
+    <div class="modal-emoji">🧠</div><h2>Como jogar</h2>
+    <p>1. Clique em uma carta para revelar o desenho.</p>
+    <p>2. Revele outra carta e tente encontrar o mesmo desenho.</p>
+    <p>3. Se forem iguais, o par fica aberto. Se não, tente memorizar onde estavam!</p>
+    <p>Complete todos os pares no menor tempo e com o menor número de tentativas.</p>
+    <button class="primary-button" data-close type="button">Entendi!</button>
+  </dialog>
+
+  <dialog id="win-dialog" class="modal win-modal">
+    <div class="win-confetti">🎉</div><div class="modal-emoji">🏆</div>
+    <p class="eyebrow">MISSÃO CUMPRIDA</p><h2>Você conseguiu!</h2>
+    <p>Todos os pares foram encontrados. Mandou bem demais!</p>
+    <div class="win-stats"><div><small>TEMPO</small><strong id="final-time">00:00</strong></div><div><small>TENTATIVAS</small><strong id="final-moves">0</strong></div></div>
+    <button class="primary-button" id="play-again" type="button">Jogar novamente ↗</button>
+  </dialog>
+
+  <script src="script.js"></script>
+</body>
+</html>
