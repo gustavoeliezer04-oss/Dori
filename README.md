@@ -24,3 +24,16 @@ Também é possível abrir a pasta no VS Code e usar a extensão **Live Server**
 - `index.html`: estrutura do jogo.
 - `style.css`: visual, animações e adaptação para telas menores.
 - `script.js`: cartas, regras, cronômetro, sons e recordes.
+
+## Publicar na Cloudflare Pages
+
+Este projeto é um site estático (HTML, CSS e JavaScript), sem framework ou dependências externas de build. O repositório inclui um script que prepara os arquivos para publicação.
+
+No painel da Cloudflare Pages, em **Settings → Builds & deployments → Build configurations**, configure:
+
+- **Framework preset:** None
+- **Build command:** `npm run build`
+- **Build output directory:** `dist`
+- **Root directory:** `/` (raiz do repositório)
+
+Salve e execute **Retry deployment**. O script `build.mjs` copia o HTML, CSS, JavaScript e a pasta `assets` para `dist/`.
